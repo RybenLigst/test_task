@@ -12,7 +12,7 @@ The project consists of two services:
 ### Technical features of the solution
 Due to the specifics of the deployment environment (Nested Virtualization / LXC limitations), I did this:
 * **Host Mode Networking:** Frontend ports were published in `mode: host` mode to avoid problems with Ingress Routing Mesh.
-* **DNS Round Robin (`dnsrr`):** Used for Service Discovery of the backend, which allows Nginx to obtain direct IP addresses of containers, bypassing virtual IPs (VIPs).
+* **DNS Round Robin (`dnsrr`):** Used for Service Discovery of the backend, which allows Nginx to obtain direct IP addresses of containers, bypassing virtual IPs.
 
 ## How to start
 
