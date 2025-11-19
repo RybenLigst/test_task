@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: nginx:alpine
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+    secrets:
+      - site_crt
+      - site_key
+    configs:
+      - source: nginx_conf
+        target: /etc/nginx/nginx.conf
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  backend:
+    image: traefik/whoami
+    networks:
+      - app-net
+    deploy:
+      replicas: 2
+      endpoint_mode: dnsrr
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  app-net:
+    driver: overlay
+    driver_opts:
+      com.docker.network.driver.mtu: "1200"
+
+secrets:
+  site_crt:
+    external: true
+  site_key:
+    external: true
+
+configs:
+  nginx_conf:
+    external: true
