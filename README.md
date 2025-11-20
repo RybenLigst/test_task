@@ -14,6 +14,10 @@ Due to the specifics of the deployment environment (Nested Virtualization / LXC 
 * **Host Mode Networking:** Frontend ports were published in `mode: host` mode to avoid problems with Ingress Routing Mesh.
 * **DNS Round Robin (`dnsrr`):** Used for Service Discovery of the backend, which allows Nginx to obtain direct IP addresses of containers, bypassing virtual IPs.
 
+Therefore, I used LXC, but this led to network limitations (Overlay/Ingress), which I resolved by switching to `mode: host` and `dnsrr`.
+
+*(Note: If this were a real Bare Metal server, I would, of course, use standard VMs and the default Ingress network).*
+
 ## How to start
 
 ### 1. Initialize Swarm
@@ -47,7 +51,3 @@ The screenshot shows that the load balancer is working.
 ### Why CT (LXC) instead of VM?
 
 Since Proxmox is a KVM hypervisor, it requires CPU virtualization instructions (VT-x or AMD-V). I ran this setup via VirtualBox on a Mac, and these instructions were not passed through (nested virtualization issue).
-
-Therefore, I used LXC, but this led to network limitations (Overlay/Ingress), which I resolved by switching to `mode: host` and `dnsrr`.
-
-*(Note: If this were a real Bare Metal server, I would, of course, use standard VMs and the default Ingress network).*
