@@ -42,3 +42,12 @@ The screenshot shows that the load balancer is working.
 
 
 <img width="499" height="927" alt="image" src="https://github.com/user-attachments/assets/3510bb53-2b23-49d2-b894-7cc3645a8e35" />
+
+
+### Why CT (LXC) instead of VM?
+
+Since Proxmox is a KVM hypervisor, it requires CPU virtualization instructions (VT-x or AMD-V). I ran this setup via VirtualBox on a Mac, and these instructions were not passed through (nested virtualization issue).
+
+Therefore, I used LXC, but this led to network limitations (Overlay/Ingress), which I resolved by switching to `mode: host` and `dnsrr`.
+
+*(Note: If this were a real Bare Metal server, I would, of course, use standard VMs and the default Ingress network).*
